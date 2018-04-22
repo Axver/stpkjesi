@@ -451,6 +451,31 @@ for some reason nth-child(1) is always busy and elements starting from 2 */
 
     </div>
 
+    <div class="row">
+
+      <div class="panel panel-info" style="background-color:#424242; color:green;">
+
+        <div class="panel-body">
+
+          Hasil TOPSIS:
+
+          <b>
+            
+
+          <?php
+
+            include "proses/backup.php";
+
+           ?>
+
+         </b>
+
+        </div>
+
+      </div>
+
+    </div>
+
 
   </div>
 

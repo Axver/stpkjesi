@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 0);
+error_reporting(E_ERROR | E_WARNING | E_PARSE); 
+
 include "../database/koneksi.php";
 
 $query = "SELECT * FROM alternatif";
@@ -15,48 +18,50 @@ while ($row = mysqli_fetch_array($query2))
             $i++;
     }
 
-echo $num_rows;
-
 $batas=0;
 $hasil=[];
 while($batas<$num_rows)
 {
+
 $hasil[$batas]=explode(',', $data[$batas]['alternatif']);
+// echo $hasil[0];
+// echo $hasil[1];
 $batas++;
 }
-// print_r($hasil);
-// echo count($hasil);
+$baris= count ($hasil);
+$kolom= count($hasil[0]);
+
+// echo $hasil[0][0];
+// echo $hasil[0][1];
+// echo $hasil[1][0];
 
 // Mendapatkan data tiap-tiap kolom
 
 $w=0;
-$kolom1=count($hasil[0]);
-$kolom1=$kolom1-1;
+$kolom1=$kolom-1;
 $simpan=[];
 
 while($w<$kolom1)
 {
-  for($x=0;$x<$num_rows;$x++)
+  for($x=0;$x<$kolom1;$x++)
   {
      $simpan[$w][$x]=$hasil[$x][$w];
-     echo $simpan[$w][$x];
   }
+  // $simpan[$w]=$
 
   $w++;
 }
 
-// echo print_r($simpan);
 //Olah Array Multidimensi masing-masing Kolom
 $maksimum=[];
 // echo max($simpan[0]);
 // echo count($simpan);
-// echo "<br/>".max($simpan[3])."<br/>";
 $jumbaris=count($simpan);
 $y=0;
 while($y<$jumbaris)
    {
      $maksimum[$y]=max($simpan[$y]);
-     echo "<br/>".$maksimum[$y];
+     // echo $maksimum[$y];
      $y++;
    }
 
@@ -67,7 +72,7 @@ $minimun=[];
    while($z<$jumbaris)
       {
         $minimum[$z]=min($simpan[$z]);
-        echo "<br/>".$minimum[$z];
+        // echo $minimum[$z];
         $z++;
       }
 
@@ -75,7 +80,7 @@ $minimun=[];
 //Ambil data database dan cek max atau min nya
 $qmaxmin= "SELECT status FROM kriteria";
 $qmaxmin2=mysqli_query($konek, $qmaxmin);
-$num_rows1 = mysqli_num_rows($qmaxmin2);
+$num_rows = mysqli_num_rows($qmaxmin2);
 $status=[];
 // echo "<br/>".$num_rows;
 $n=0;
@@ -98,13 +103,13 @@ while ($tambah<$jumbaris)
  {
    $tambah1=0;
    $penjumlahan=0;
-   while($tambah1<$num_rows)
+   while($tambah1<$jumbaris)
     {
       $penjumlahan=$penjumlahan+($simpan[$tambah][$tambah1]*$simpan[$tambah][$tambah1]);
       $tambah1++;
     }
     $hasiljum[$tambah]=$penjumlahan;
-    echo $hasiljum[$tambah]."<br/>";
+    // echo $hasiljum[$tambah]."<br/>";
     $tambah++;
  }
 
@@ -148,38 +153,19 @@ while ($tambah<$jumbaris)
 //   }
 
 
-$querymatriks = "SELECT * FROM matriks_w";
-$query2matriks=mysqli_query($konek, $querymatriks);
-$datamatriks = [];
-$servant = 0;
-$num_rows2 = mysqli_num_rows($query2matriks);
-while ($row = mysqli_fetch_array($query2matriks))
-       {
-            $datamatriks[$servant]['id' ] = $row['id'];
-            $datamatriks[$servant]['nilai'] = $row['nilai'];
-            // echo $datamatriks[$servant]['nilai'].",";
-            $servant++;
-    }
-
-  echo "<br/>"."<br/>".print_r($datamatriks)."<br/>";
-  // echo $datamatriks[0]['nilai'];
-
-
 $olah=0;
 $pembagian;
 $dataolah=[];
 while ($olah<$jumbaris)
   {
     $jesi=0;
-    while ($jesi<$num_rows) {
+    while ($jesi<$jumbaris) {
 
          $pembagian=$simpan[$olah][$jesi]/$hasilakar[$olah];
-         $dataolah[$olah][$jesi]=$pembagian*$datamatriks[$olah]['nilai'];
+         $dataolah[$olah][$jesi]=$pembagian;
          // echo $dataolah[$olah][$jesi].",";
          $jesi++;
     }
-
-    echo print_r($dataolah);
 
     $olah++;
 
@@ -190,18 +176,52 @@ while ($olah<$jumbaris)
 
   //1.Dapatkan Nilai bobot dari database
 
+  $querymatriks = "SELECT * FROM matriks_w";
+  $query2matriks=mysqli_query($konek, $querymatriks);
+  $datamatriks = [];
+  $servant = 0;
+  $num_rows = mysqli_num_rows($query2matriks);
+  while ($row = mysqli_fetch_array($query2matriks))
+         {
+              $datamatriks[$servant]['id' ] = $row['id'];
+              $datamatriks[$servant]['nilai'] = $row['nilai'];
+              // echo $datamatriks[$servant]['nilai']."<br/>";
+              $servant++;
+      }
 
+  //Kalikan matriks sebelumnya dengan matriks w
+
+  $matriksbaru=[];
+
+  $axver=0;
+
+  $dataolah=[];
+  while ($axver<$jumbaris)
+    {
+      $deva=0;
+      $pembagian=0;
+      while ($deva<$jumbaris) {
+
+           $pembagian=$simpan[$axver][$deva]*$datamatriks[$axver]['nilai']; //Jangan Lupa ini di parse ke float
+           $matriksbaru[$axver][$deva]=$pembagian;
+           // echo $matriksbaru[$axver][$deva].",";
+           $deva++;
+      }
+
+      $axver++;
+
+
+    }
 
 // Cari Y plus nya dan dapatkan A plus nya
 
 $maksy=[];
 $arraymaks=[];
-$jumbarisbaru=count($dataolah);
-echo "<br/>"."<br/>".$jumbarisbaru;
+$jumbarisbaru=count($matriksbaru);
 $y=0;
 while($y<$jumbarisbaru)
    {
-     $maksy[$y]=max($dataolah[$y]);
+     $maksy[$y]=max($matriksbaru[$y]);
      $arraymaks[$y]=$maksy[$y];
      // echo "</br>".$arraymaks[$y];
      $y++;
@@ -213,7 +233,7 @@ $arraymin=[];
 $y=0;
 while($y<$jumbarisbaru)
    {
-     $miny[$y]=min($dataolah[$y]);
+     $miny[$y]=min($matriksbaru[$y]);
      $arraymin[$y]=$miny[$y];
      // echo "</br>".$arraymin[$y];
      $y++;
@@ -235,7 +255,7 @@ while ($axver<$jumbaris)
     $totalpangkat=0;
     while ($deva<$jumbaris) {
 
-         $pengurangan=$dataolah[$deva][$axver]-$maksy[$axver]; //Jangan Lupa ini di parse ke float
+         $pengurangan=$matriksbaru[$deva][$axver]-$maksy[$axver]; //Jangan Lupa ini di parse ke float
          // Kuadratkan mereka
          $pengurangan=$pengurangan*$pengurangan;
          $hasilkurang[$axver][$deva]=$pengurangan;
@@ -247,10 +267,9 @@ while ($axver<$jumbaris)
 
 
   }
-  // echo print_r($hasilkurang);
 //*Jumlahkan hasil kuadrat perbaris dan cari akarnya
 $total=count($hasilkurang[0]);
-// echo "hahaha".$total;
+// echo $total;
 $i=0;
 $arraybaru=[];
 while ($i<$total)
@@ -285,7 +304,7 @@ while ($axver<$jumbaris)
     $totalpangkat=0;
     while ($deva<$jumbaris) {
 
-         $pengurangan=$matriksbaru[$deva][$axver]-$miny[$axver]; //Jangan Lupa ini di parse ke float
+         $pengurangan=$dataolah[$deva][$axver]-$miny[$axver]; //Jangan Lupa ini di parse ke float
          // Kuadratkan mereka
          $pengurangan=$pengurangan*$pengurangan;
          $hasilkurang1[$axver][$deva]=$pengurangan;
