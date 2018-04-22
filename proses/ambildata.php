@@ -88,9 +88,68 @@ while ($row = mysqli_fetch_array($qmaxmin2))
             $n++;
     }
 
-    echo "<br/>".$status[0];
+    // echo "<br/>".$status[0];
 
 //Olah data masing-masing dengan rumus yg ada
+
+//Cari jumlah kuadrat perkolom data
+
+$tambah=0;
+$hasiljum=[];
+while ($tambah<$jumbaris)
+ {
+   $tambah1=0;
+   $penjumlahan=0;
+   while($tambah1<$jumbaris)
+    {
+      $penjumlahan=$penjumlahan+($simpan[$tambah][$tambah1]*$simpan[$tambah][$tambah1]);
+      $tambah1++;
+    }
+    $hasiljum[$tambah]=$penjumlahan;
+    echo $hasiljum[$tambah]."<br/>";
+    $tambah++;
+ }
+
+ //Cari Akar kuadrat dari jumlah kuadrat data
+ $kuadrat=0;
+ $hasilakar=[];
+ while ($kuadrat<$jumbaris)
+ {
+     $haskuadrat=0;
+     $haskuadrat= sqrt($hasiljum[$kuadrat]);
+     $hasilakar[$kuadrat]=$haskuadrat;
+     echo $hasilakar[$kuadrat]."<br/>";
+     $kuadrat++;
+ }
+
+//Cari hasil pembagian dengan akar kuadrat
+// $olah=0;
+// $pembagian;
+// $dataolah=[];
+// while ($olah<$jumbaris)
+//   {
+//     $jesi=0;
+//     while ($jesi<$jumbaris) {
+//       if($status[$olah]==1)
+//        {
+//          $pembagian=$simpan[$olah][$jesi]/$maksimum[$olah];
+//          $dataolah[$olah][$jesi]=$pembagian;
+//          // echo $dataolah[$olah][$jesi]."<br/>";
+//        }
+//        else {
+//          $pembagian=$minimum[$olah]/$simpan[$olah][$jesi];
+//          $dataolah[$olah][$jesi]=$pembagian;
+//          // echo $dataolah[$olah][$jesi]."<br/>";
+//        }
+//        $jesi++;
+//     }
+//
+//     $olah++;
+//
+//
+//   }
+
+
 $olah=0;
 $pembagian;
 $dataolah=[];
@@ -98,18 +157,11 @@ while ($olah<$jumbaris)
   {
     $jesi=0;
     while ($jesi<$jumbaris) {
-      if($status[$olah]==1)
-       {
-         $pembagian=$simpan[$olah][$jesi]/$maksimum[$olah];
+
+         $pembagian=$simpan[$olah][$jesi]/$hasilakar[$olah];
          $dataolah[$olah][$jesi]=$pembagian;
-         // echo $dataolah[$olah][$jesi]."<br/>";
-       }
-       else {
-         $pembagian=$minimum[$olah]/$simpan[$olah][$jesi];
-         $dataolah[$olah][$jesi]=$pembagian;
-         // echo $dataolah[$olah][$jesi]."<br/>";
-       }
-       $jesi++;
+         echo $dataolah[$olah][$jesi].",";
+         $jesi++;
     }
 
     $olah++;
@@ -117,7 +169,7 @@ while ($olah<$jumbaris)
 
   }
 
-  //Didapatkan Nilai baru hasil pembagian dan dilanjutkan dengan perkalian matriks
+  //Didapatkan Nilai baru hasil pembagian dan dilanjutkan dengan perkalian matriks dengan bobot
 
 
 
