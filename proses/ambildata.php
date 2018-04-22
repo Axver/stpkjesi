@@ -58,7 +58,7 @@ $y=0;
 while($y<$jumbaris)
    {
      $maksimum[$y]=max($simpan[$y]);
-     echo $maksimum[$y];
+     // echo $maksimum[$y];
      $y++;
    }
 
@@ -69,12 +69,55 @@ $minimun=[];
    while($z<$jumbaris)
       {
         $minimum[$z]=min($simpan[$z]);
-        echo $minimum[$z];
+        // echo $minimum[$z];
         $z++;
       }
 
 
+//Ambil data database dan cek max atau min nya
+$qmaxmin= "SELECT status FROM kriteria";
+$qmaxmin2=mysqli_query($konek, $qmaxmin);
+$num_rows = mysqli_num_rows($qmaxmin2);
+$status=[];
+// echo "<br/>".$num_rows;
+$n=0;
+while ($row = mysqli_fetch_array($qmaxmin2))
+       {
+            $status[$n] = $row['status'];
+            // echo $data[$i]['alternatif'];
+            $n++;
+    }
+
+    echo "<br/>".$status[0];
+
 //Olah data masing-masing dengan rumus yg ada
+$olah=0;
+$pembagian;
+$dataolah=[];
+while ($olah<$jumbaris)
+  {
+    $jesi=0;
+    while ($jesi<$jumbaris) {
+      if($status[$olah]==1)
+       {
+         $pembagian=$simpan[$olah][$jesi]/$maksimum[$olah];
+         $dataolah[$olah][$jesi]=$pembagian;
+         // echo $dataolah[$olah][$jesi]."<br/>";
+       }
+       else {
+         $pembagian=$minimum[$olah]/$simpan[$olah][$jesi];
+         $dataolah[$olah][$jesi]=$pembagian;
+         // echo $dataolah[$olah][$jesi]."<br/>";
+       }
+       $jesi++;
+    }
+
+    $olah++;
+
+
+  }
+
+  //Didapatkan Nilai baru hasil pembagian dan dilanjutkan dengan perkalian matriks
 
 
 
