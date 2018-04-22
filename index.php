@@ -460,11 +460,11 @@ for some reason nth-child(1) is always busy and elements starting from 2 */
           Hasil TOPSIS:
 
           <b>
-            
+
 
           <?php
 
-            include "proses/backup.php";
+            include "proses/ambildata.php";
 
            ?>
 

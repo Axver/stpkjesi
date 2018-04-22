@@ -1,6 +1,6 @@
 <?php
 
-include "../database/koneksi.php";
+include "database/koneksi.php";
 
 $query = "SELECT * FROM alternatif";
 $query2=mysqli_query($konek, $query);
@@ -15,7 +15,7 @@ while ($row = mysqli_fetch_array($query2))
             $i++;
     }
 
-echo $num_rows;
+// echo $num_rows;
 
 $batas=0;
 $hasil=[];
@@ -39,7 +39,7 @@ while($w<$kolom1)
   for($x=0;$x<$num_rows;$x++)
   {
      $simpan[$w][$x]=$hasil[$x][$w];
-     echo $simpan[$w][$x];
+     // echo $simpan[$w][$x];
   }
 
   $w++;
@@ -56,7 +56,7 @@ $y=0;
 while($y<$jumbaris)
    {
      $maksimum[$y]=max($simpan[$y]);
-     echo "<br/>".$maksimum[$y];
+     // echo "<br/>".$maksimum[$y];
      $y++;
    }
 
@@ -67,7 +67,7 @@ $minimun=[];
    while($z<$jumbaris)
       {
         $minimum[$z]=min($simpan[$z]);
-        echo "<br/>".$minimum[$z];
+        // echo "<br/>".$minimum[$z];
         $z++;
       }
 
@@ -104,7 +104,7 @@ while ($tambah<$jumbaris)
       $tambah1++;
     }
     $hasiljum[$tambah]=$penjumlahan;
-    echo $hasiljum[$tambah]."<br/>";
+    // echo $hasiljum[$tambah]."<br/>";
     $tambah++;
  }
 
@@ -161,7 +161,7 @@ while ($row = mysqli_fetch_array($query2matriks))
             $servant++;
     }
 
-  echo "<br/>"."<br/>".print_r($datamatriks)."<br/>";
+  // echo "<br/>"."<br/>".print_r($datamatriks)."<br/>";
   // echo $datamatriks[0]['nilai'];
 
 
@@ -179,12 +179,17 @@ while ($olah<$jumbaris)
          $jesi++;
     }
 
-    echo print_r($dataolah);
+    // echo print_r($dataolah);
 
     $olah++;
 
 
   }
+
+//   foreach($dataolah as $row){
+// print_r($row);
+// echo'<br>';
+// }
 
   //Didapatkan Nilai baru hasil pembagian dan dilanjutkan dengan perkalian matriks dengan bobot
 
@@ -197,7 +202,7 @@ while ($olah<$jumbaris)
 $maksy=[];
 $arraymaks=[];
 $jumbarisbaru=count($dataolah);
-echo "<br/>"."<br/>".$jumbarisbaru;
+// echo "<br/>"."<br/>".$jumbarisbaru;
 $y=0;
 while($y<$jumbarisbaru)
    {
@@ -227,7 +232,6 @@ $hasilkurang=[];
 
 $axver=0;
 
-$dataolah=[];
 while ($axver<$jumbaris)
   {
     $deva=0;
@@ -285,7 +289,7 @@ while ($axver<$jumbaris)
     $totalpangkat=0;
     while ($deva<$jumbaris) {
 
-         $pengurangan=$matriksbaru[$deva][$axver]-$miny[$axver]; //Jangan Lupa ini di parse ke float
+         $pengurangan=$dataolah[$deva][$axver]-$miny[$axver]; //Jangan Lupa ini di parse ke float
          // Kuadratkan mereka
          $pengurangan=$pengurangan*$pengurangan;
          $hasilkurang1[$axver][$deva]=$pengurangan;
