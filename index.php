@@ -20,7 +20,7 @@ include "database/koneksi.php";
 
 
 <meta charset="utf-8">
-<title>Tugas STPK kelompok 16</title>
+<title>Metode TOPSIS</title>
 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
@@ -296,7 +296,7 @@ for some reason nth-child(1) is always busy and elements starting from 2 */
 </head>
 
 <body style="background-image: url('image/gambar.jpg')">
-<h1 style="color:#fff" align="center">Tugas STPK kelompok 16</h1>
+<h1 style="color:#fff" align="center">Metode TOPSIS</h1>
 
 <div class="menu">
   <div class="btn trigger"> <span class="line"></span> </div>
@@ -453,26 +453,54 @@ for some reason nth-child(1) is always busy and elements starting from 2 */
 
     <div class="row">
 
-      <div class="panel panel-info" style="background-color:#424242; color:green;">
+      <div class="col-sm-3">
 
-        <div class="panel-body">
+        <div class="panel panel-info" style="background-color:#424242; color:green;">
 
-          Hasil TOPSIS:
+          <div class="panel-body">
 
-          <b>
+            Hasil TOPSIS:
+
+            <b>
 
 
-          <?php
+            <?php
 
-            include "proses/ambildata.php";
+              include "proses/ambildata.php";
 
-           ?>
+             ?>
 
-         </b>
+           </b>
+
+          </div>
 
         </div>
 
       </div>
+
+      <div class="col-sm-3">
+
+        <div class="panel panel-info">
+
+          <div class="panel-body">
+            <?php
+
+             echo $indexmax;
+             $end=$jumbaris-1;
+             // echo $hasil[$indexmax-1][$jumbaris];
+             ?>
+
+             <h2> Pilihan : <?php  echo $hasil[$indexmax-1][$jumbaris]; ?> </h2>
+             <p>Metode Yang digunakan : TOPSIS</p>
+             <p>Nama : Jesi Namora</p>
+             <p>NIM : 1511521029</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
 
     </div>
 

@@ -24,6 +24,12 @@ while($batas<$num_rows)
 $hasil[$batas]=explode(',', $data[$batas]['alternatif']);
 $batas++;
 }
+
+
+// foreach($hasil as $row){
+// print_r($row);
+// echo'<br>';
+// }
 // print_r($hasil);
 // echo count($hasil);
 
@@ -44,6 +50,12 @@ while($w<$kolom1)
 
   $w++;
 }
+
+
+// foreach($simpan as $row){
+// print_r($row);
+// echo'<br>';
+// }
 
 // echo print_r($simpan);
 //Olah Array Multidimensi masing-masing Kolom
@@ -206,11 +218,17 @@ $jumbarisbaru=count($dataolah);
 $y=0;
 while($y<$jumbarisbaru)
    {
-     $maksy[$y]=max($dataolah[$y]);
+     $maksy[$y]=max($dataolah);
      $arraymaks[$y]=$maksy[$y];
      // echo "</br>".$arraymaks[$y];
      $y++;
    }
+
+
+   //   foreach($maksy as $row){
+   // print_r($row);
+   // echo'<br>';
+   // }
 
 //Cari Y min dan dapatkan A min nya
 $miny=[];
@@ -218,16 +236,23 @@ $arraymin=[];
 $y=0;
 while($y<$jumbarisbaru)
    {
-     $miny[$y]=min($dataolah[$y]);
+     $miny[$y]=min($dataolah);
      $arraymin[$y]=$miny[$y];
      // echo "</br>".$arraymin[$y];
      $y++;
    }
 
+// foreach($miny as $row){
+//       print_r($row);
+//       echo'<br>';
+//       }
+
 
 //cari jarak antar setiap nilai terbobot setiap alternatif
 //Terhadap solusi ideal positif
 // *pengurangan dengan max
+
+
 $hasilkurang=[];
 
 $axver=0;
@@ -237,9 +262,10 @@ while ($axver<$jumbaris)
     $deva=0;
     $pengurangan=0;
     $totalpangkat=0;
-    while ($deva<$jumbaris) {
-
-         $pengurangan=$dataolah[$deva][$axver]-$maksy[$axver]; //Jangan Lupa ini di parse ke float
+    while ($deva<$num_rows) {
+        // echo $dataolah[$axver][$deva]."<br/>";
+        // echo $maksy[$axver][$deva]."<br/>";
+         $pengurangan=$dataolah[$axver][$deva]-$maksy[$axver][$deva]; //Jangan Lupa ini di parse ke float
          // Kuadratkan mereka
          $pengurangan=$pengurangan*$pengurangan;
          $hasilkurang[$axver][$deva]=$pengurangan;
@@ -257,13 +283,13 @@ $total=count($hasilkurang[0]);
 // echo "hahaha".$total;
 $i=0;
 $arraybaru=[];
-while ($i<$total)
+while ($i<$num_rows)
 {
   $j=0;
   $hasilakhir=0;
-  while ($j<$total)
+  while ($j<$jumbaris)
   {
-    $hasilakhir=$hasilakhir+$hasilkurang[$i][$j];
+    $hasilakhir=$hasilakhir+$hasilkurang[$j][$i];
 
     $j++;
   }
@@ -272,6 +298,11 @@ while ($i<$total)
   $i++;
 
 }
+
+// foreach($arraybaru as $row){
+//       print_r($row);
+//       echo',';
+//       }
 
 
 //cari jarak antar setiap nilai terbobot setiap alternatif
@@ -287,9 +318,9 @@ while ($axver<$jumbaris)
     $deva=0;
     $pengurangan=0;
     $totalpangkat=0;
-    while ($deva<$jumbaris) {
+    while ($deva<$num_rows) {
 
-         $pengurangan=$dataolah[$deva][$axver]-$miny[$axver]; //Jangan Lupa ini di parse ke float
+         $pengurangan=$dataolah[$axver][$deva]-$miny[$axver][$deva]; //Jangan Lupa ini di parse ke float
          // Kuadratkan mereka
          $pengurangan=$pengurangan*$pengurangan;
          $hasilkurang1[$axver][$deva]=$pengurangan;
@@ -306,13 +337,13 @@ $total=count($hasilkurang1[0]);
 // echo $total;
 $i=0;
 $arraybaru1=[];
-while ($i<$total)
+while ($i<$num_rows)
 {
   $j=0;
   $hasilakhir=0;
-  while ($j<$total)
+  while ($j<$jumbaris)
   {
-    $hasilakhir=$hasilakhir+$hasilkurang1[$i][$j];
+    $hasilakhir=$hasilakhir+$hasilkurang1[$j][$i];
 
     $j++;
   }
@@ -322,6 +353,12 @@ while ($i<$total)
 
 }
 
+// echo "<br/>";
+// foreach($arraybaru1 as $row){
+//       print_r($row);
+//       echo'<br>';
+//       }
+
 // Kedetakatan setiap alternatif terhadap solusi ideal
 /*
 Di negatif/ Di Negatif + Di Positif
@@ -330,13 +367,16 @@ Di negatif/ Di Negatif + Di Positif
 $i=0;
 $preferensi=0;
 $matpref=[];
-while ($i<$total)
+while ($i<$num_rows)
  {
    $preferensi=$arraybaru1[$i]/($arraybaru1[$i]+$arraybaru[$i]);
    $matpref[$i]=$preferensi;
    echo "<br/>".$matpref[$i];
    $i++;
  }
+
+ $indexmax= max(array_keys($matpref));
+ 
 
 
 // Dapatkan solusi dengan mengambil data array pertama
